@@ -27,7 +27,6 @@ These notes apply to our installation. They may or may not be relevant to yours.
    * It is not possible to define different templates for different hosts in one auto discovery group.
    * Templates are merely (barely) usable for creating sensors, but not for doing changes. Changes have to be done manually per device and sensor.
    * The PRTG server or Windows is often temporarily unable to resolve partial DNS names. Use fully qualified DNS names.
-   * It is not possible to zoom into graphs. Merely the picture is enlarged. 
 
 ## Notifications
    * It is not possible to see which notifications you have set. Workaroung: use a notification mail, if you got one, or go manually through all groups, devices and sensors.
