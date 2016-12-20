@@ -14,6 +14,7 @@ These notes apply to our installation. They may or may not be relevant to yours.
    * Neither the devices, nor the sensors are sorted in any particular way.
    * It is not possible to limit the sensor search to a group, or limit the search criteria in any way.
    * It is not possible to search for sensors by names. Workaround: give the sensors tags equal to the names and browse by tags.
+   * It is not possible to zoom into graphs. No additional details are shown, merely the picture is being enlarged. 
 
 ## Auto discovery and templates
    * The auto discovery process freezes the PRTG server for some time (minutes). The user interface is not usable during this time.
@@ -26,6 +27,7 @@ These notes apply to our installation. They may or may not be relevant to yours.
    * It is not possible to define different templates for different hosts in one auto discovery group.
    * Templates are merely (barely) usable for creating sensors, but not for doing changes. Changes have to be done manually per device and sensor.
    * The PRTG server or Windows is often temporarily unable to resolve partial DNS names. Use fully qualified DNS names.
+   * It is not possible to zoom into graphs. Merely the picture is enlarged. 
 
 ## Notifications
    * It is not possible to see which notifications you have set. Workaroung: use a notification mail, if you got one, or go manually through all groups, devices and sensors.
