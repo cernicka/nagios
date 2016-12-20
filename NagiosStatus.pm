@@ -1,4 +1,4 @@
-package MMnagios_status;
+package NagiosStatus;
 
 # Author: Martin Cernicka
 # Send status to Nagios using send_nsca.
