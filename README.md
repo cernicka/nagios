@@ -9,9 +9,12 @@ directory, even recursively.
 format. It includes any counters, descriptions, status and messages. It enables
 to use Nagios plugins with PRTG.
 
-* **NagiosStatus.pl** and **t/nagios.pl**: Perl module for sending status to Nagios.
+* **NagiosStatus.pm** and **t/nagios.pl**: Perl module for sending status to Nagios.
 
 * **nagios_to_prtg.txt**: Migration notes.
 
 * **prtg_push.pl**: Perl module for sending status to PRTG.
+
+* **xpertivy_sessions.pl**: Nagios Plugin for counting the active user sessions
+in Xpert.Ivy, a web application.
 
