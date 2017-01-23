@@ -1,7 +1,8 @@
 #!/usr/bin/env perl
 
-# Nagios plugin to count and list the active sessions from Xpert.Ivy 3.9 Build 52 Patch 3, a web
-# application.
+# Nagios plugin to count and list the active sessions from Xpert.Ivy 3.9 Build
+# 52 Patch 3, a web application. Used for ensuring the licensed count is not
+# reached, so users won't be locked out.
 
 # This script logs into the web console and loads the "Web Application
 # Information" page. There is, among others, a list of "Running Sessions" in a
@@ -52,6 +53,12 @@ sub get_sessions {
 	my $te = HTML::TableExtract->new();
 	$te->parse( $mech->content );
 
+	# logout in order to not accumulate user sessions
+	$res = $mech->get( $NP->opts->logout_url );
+	if ( $res->is_error ) {
+		$NP->nagios_exit( UNKNOWN, $res->status_line );
+	}
+
 	# search the table rows for 'Running Sessions' in the first column
 	foreach my $table ( $te->tables ) {
 		foreach my $row ( $table->rows ) {
@@ -87,13 +94,19 @@ sub main {
 		shortname => 'Xpert.Ivy Sessions',
 		version   => '0.1',
 		usage =>
-		  "Usage: %s -H host -s <session_url> -u <username> -p <password> -w <sessions> -c <sessions>",
+		  "Usage: %s -H host -s <session_url> -l <logout_url> -u <username> -p <password> -w <sessions> -c <sessions>",
 		blurb => "Returns the count and list of active Xpert.Ivy sessions."
 	);
 
 	$NP->add_arg(
 		spec     => 'session_url|s=s',
 		help     => '-s URL which lists the sessions',
+		required => 1,
+	);
+
+	$NP->add_arg(
+		spec     => 'logout_url|l=s',
+		help     => '-l URL which logs the user out',
 		required => 1,
 	);
 
