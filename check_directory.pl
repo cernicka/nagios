@@ -13,6 +13,25 @@ use Nagios::Plugin::Threshold;
 # Nagios::Plugin object, used in multiple functions
 our $NP;
 
+# taken from HTML::Escape, for which there is no Debian package yet
+sub escape_html {
+	my %_escape_table = (
+		'&'  => '&amp;',
+		'>'  => '&gt;',
+		'<'  => '&lt;',
+		q{"} => '&quot;',
+		q{'} => '&#39;',
+		q{`} => '&#96;',
+		'{'  => '&#123;',
+		'}'  => '&#125;'
+	);
+	my $str = shift;
+	return ''
+	  unless defined $str;
+	$str =~ s/([&><"'`{}])/$_escape_table{$1}/ge;    #' for poor editors
+	return $str;
+}
+
 # count files in a directory, find out age of newest or oldest file
 # parameters: none
 # global variable: $NP - a Nagios::Plugin object
@@ -30,8 +49,9 @@ sub dir_info {
 		$NP->opts->recursive );
 
 	if ( !defined($count) ) {
-		$NP->nagios_die(
-			"Error getting informations about '$file_to_report': $!\n");
+		$NP->nagios_die( "Error getting informations about \""
+			  . escape_html($file_to_report)
+			  . "\": $!\n" );
 	}
 
 	# return the correct variable according to the parameters,
@@ -47,7 +67,8 @@ sub dir_info {
 
 	if ( $NP->opts->check eq 'age_newest' ) {
 		$NP->add_perfdata(
-			label => "Age of newest file \"$file_to_report\"",
+			label => 'Age of newest file "'
+			  . escape_html($file_to_report) . '"',
 			value => time - $mtime
 		);
 
@@ -57,7 +78,8 @@ sub dir_info {
 
 	if ( $NP->opts->check eq 'age_oldest' ) {
 		$NP->add_perfdata(
-			label => "Age of oldest file \"$file_to_report\"",
+			label => 'Age of oldest file "'
+			  . escape_html($file_to_report) . '"',
 			value => time - $mtime
 		);
 
@@ -132,8 +154,7 @@ sub countfiles {
 				$newest         = $mtime;
 				$file_to_report = $path;
 			}
-		}
-		elsif ( $check eq 'age_oldest' ) {
+		} elsif ( $check eq 'age_oldest' ) {
 
 			# is it a new record?
 			if ( $mtime < $oldest ) {
@@ -147,11 +168,9 @@ sub countfiles {
 
 	if ( $check eq 'age_newest' ) {
 		return ( $count, $newest, $file_to_report );
-	}
-	elsif ( $check eq 'age_oldest' ) {
+	} elsif ( $check eq 'age_oldest' ) {
 		return ( $count, $oldest, $file_to_report );
-	}
-	else {
+	} else {
 		return ( $count, undef, undef );
 	}
 }
