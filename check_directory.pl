@@ -179,7 +179,7 @@ sub main {
 	$NP = Nagios::Plugin->new(
 		plugin    => 'check_directory',
 		shortname => 'Directory check',
-		version   => '0.2',
+		version   => '0.3',
 		usage =>
 		  "Usage: %s -C <check_type> -d <directory_name> -w <seconds> -c <seconds>",
 		blurb =>
